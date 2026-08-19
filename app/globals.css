@@ -127,3 +127,31 @@
     @apply font-sans;
     }
 }
+
+:root {
+  --background: #ffffff;
+  --surface-tan: #d9c7ae;
+  --accent: #a97c50;
+  --accent-hover: #8f6740;
+  --accent-soft: #efe4d3;
+  --text-primary: #2b2118;
+  --text-muted: #8a8177;
+  --border-subtle: #e5ddd0;
+  --chart-selected: #c9a47e;
+  --chart-muted: #efe6d8;
+  --badge-orange: #e8833a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface-tan: var(--surface-tan);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-text-primary: var(--text-primary);
+  --color-text-muted: var(--text-muted);
+  --color-border-subtle: var(--border-subtle);
+  --color-chart-selected: var(--chart-selected);
+  --color-chart-muted: var(--chart-muted);
+  --color-badge-orange: var(--badge-orange);
+}
