@@ -5,9 +5,24 @@ import {Badge} from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader,CardTitle ,CardDescription ,CardContent } from '@/components/ui/card';
 import SliderControl from '@/components/SliderControl';
+import { useEffect, useState } from 'react';
+import { useFDCalcultorContext } from '@/context/FDContext';
 
 
-export default function(){
+export default function( ) {
+
+   const {
+     setPrincipalAmount,
+     setInterestRate,
+     setTenureYears,
+     setCompoundingPeriods,
+     principalAmount,
+     tenureYears,
+     interestRate,
+     compoundingPeriods
+
+   } = useFDCalcultorContext();
+
     return(
 
         <Card className="bg-white px-4">
@@ -28,9 +43,10 @@ export default function(){
                             label={"Deposite Amount (₹)"}
                             min={10000}
                             max={5000000}
-                            value={100000}
+                            value={principalAmount}
                             step={10000}
                             symbol=" ₹"
+                            onChange={(val: number) => setPrincipalAmount(val)}
                          />
                       </div>
                       <div className="py-4">
@@ -39,21 +55,23 @@ export default function(){
                                <span className="text-gray-900 text-xl">Interest Payout</span>
                             </div>
                              <div className="flex items-center justify-between gap-2">
-                                 <Badge  className="border border-accent py-4 px-3 text-accent hover:text-white hover:bg-accent cursor-pointer">Quarterly</Badge>
-                                 <Badge  className="border border-accent py-4 px-3 text-accent hover:text-white hover:bg-accent cursor-pointer">Half-Yearly</Badge>
-                                 <Badge  className="border border-accent py-4 px-3 text-accent hover:text-white hover:bg-accent cursor-pointer">Yearly</Badge>
-                                 <Badge  className="border border-accent py-4 px-3 text-accent hover:text-white hover:bg-accent cursor-pointer">Maturity</Badge>
+                              
+                                 <Badge  className={`border border-accent py-4 px-3 text-accent hover:text-white hover:bg-accent ${compoundingPeriods === 12?"text-white bg-accent":""} cursor-pointer`} onClick={()=> setCompoundingPeriods(12)}>Monthly</Badge>
+                                 <Badge  className={`border border-accent py-4 px-3 text-accent hover:text-white hover:bg-accent ${compoundingPeriods === 1? "text-white bg-accent":""} cursor-pointer`} onClick={()=> setCompoundingPeriods(1)} >Quarterly</Badge>
+                                 <Badge  className={`border border-accent py-4 px-3 text-accent hover:text-white hover:bg-accent ${compoundingPeriods === 2? "text-white bg-accent":""} cursor-pointer`} onClick={()=> setCompoundingPeriods(2)}>Half-Yearly</Badge>
+                                 <Badge  className={`border border-accent py-4 px-3 text-accent hover:text-white hover:bg-accent ${compoundingPeriods === 4? "text-white bg-accent":""} cursor-pointer`} onClick={()=> setCompoundingPeriods(4)}>Yearly</Badge>
                              </div>
                         </div>
                       </div>
                        <div>
                          <SliderControl 
                             label={"Rate of Returns (%)"}
-                            min={3}
+                            min={2}
                             max={30}
-                            value={5}
+                            value={ interestRate }
                             step={.5}
                             symbol="%"
+                            onChange={(val: number) => setInterestRate(val)}
                          />
                       </div>
                        <div>
@@ -61,9 +79,10 @@ export default function(){
                             label={"Time Period"}
                             min={5}
                             max={30}
-                            value={10}
+                            value={tenureYears}
                             step={1}
                             symbol=""
+                            onChange={(val: number) => setTenureYears(val)}
                          />
                       </div>
                       <div className="py-3">
