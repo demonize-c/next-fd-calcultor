@@ -19,7 +19,8 @@ export default function( ) {
      principalAmount,
      tenureYears,
      interestRate,
-     compoundingPeriods
+     compoundingPeriods,
+     calculate
 
    } = useFDCalcultorContext();
 
@@ -66,7 +67,7 @@ export default function( ) {
                        <div>
                          <SliderControl 
                             label={"Rate of Returns (%)"}
-                            min={2}
+                            min={4}
                             max={30}
                             value={ interestRate }
                             step={.5}
@@ -94,6 +95,7 @@ export default function( ) {
                             hover:bg-accent-hover
                             cursor-pointer
                             "
+                            onClick={() => calculate() }
                          >Calculate</Button>
                       </div>
                        

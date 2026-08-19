@@ -8,10 +8,13 @@ type FDCalcultorContextType = {
     tenureYears: number
     compoundingPeriods: number,
     totalInterest: number,
+    yearWiseInterestAmounts: number[],
+    loading: boolean,
     setPrincipalAmount: (principalAmount: number) => void,
     setInterestRate: (interestRate: number) => void
     setTenureYears: (tenureYears: number) => void
     setCompoundingPeriods: (compoundingYears: number) => void
+    calculate: () => void
 }
 
 const FDCalculatorContext = createContext<FDCalcultorContextType | undefined>(undefined);
@@ -19,12 +22,12 @@ const FDCalculatorContext = createContext<FDCalcultorContextType | undefined>(un
 export function FDCalculatorProvider({ children   }: {children: ReactNode}) {
 
     const [principalAmount, setPrincipalAmount] = useState<number>(10000);
-    const [interestRate, setInterestRate ] = useState<number>(3);
-    const [tenureYears, setTenureYears] = useState<number>(2);
+    const [interestRate, setInterestRate ] = useState<number>(4);
+    const [tenureYears, setTenureYears] = useState<number>(5);
     const [compoundingPeriods, setCompoundingPeriods] = useState<number>(1)
     const [totalInterest, setTotalInterest ] = useState<number>(0);
-    const [period, setPeriod] = useState<number>(1);
     const [yearWiseInterestAmounts, setYearWiseInteresetAmount ] = useState<number[]>([]);
+    const [loading, setLoading] = useState(false)
 
     const calculateCompoundInterest = ( { principal, rateOfIntereset, periodInYears , compoundingPeriods}
     :{
@@ -38,43 +41,54 @@ export function FDCalculatorProvider({ children   }: {children: ReactNode}) {
        return  parseFloat((principalAmount * Math.pow(1 + rateOfIntereset/(100 * compoundingPeriods) , (compoundingPeriods * periodInYears))).toFixed(2));
     }
 
-    useEffect(()=> {
+    // useEffect(()=> {
 
-      let tempYearWiseInterestAmounts: number[] = 
-      Array
-      .from({length: tenureYears},(_, i) => i + 1)
-      .map(( y ) => calculateCompoundInterest({
-        principal: principalAmount,
-        rateOfIntereset: interestRate,
-        compoundingPeriods: compoundingPeriods,
-        periodInYears: y
-      }));
+      
 
+    // },[ principalAmount, interestRate, tenureYears, compoundingPeriods]);
 
-       setYearWiseInteresetAmount( tempYearWiseInterestAmounts );
-       setTotalInterest( 
-         calculateCompoundInterest({
-            principal: principalAmount,
-            rateOfIntereset: interestRate,
+    const handleCalculate = () => {
+        setLoading(true)
+        let tempYearWiseInterestAmounts: number[] = 
+        Array
+        .from({length: tenureYears},(_, i) => i + 1)
+        .map(( y ) => calculateCompoundInterest({
+            principal:          principalAmount,
+            rateOfIntereset:    interestRate,
             compoundingPeriods: compoundingPeriods,
-            periodInYears: tenureYears
-        }) - principalAmount
-       );
+            periodInYears: y
+        }));
 
-    },[ principalAmount, interestRate, tenureYears, compoundingPeriods]);
+
+        setYearWiseInteresetAmount( tempYearWiseInterestAmounts );
+        setTotalInterest( 
+            calculateCompoundInterest({
+                principal: principalAmount,
+                rateOfIntereset: interestRate,
+                compoundingPeriods: compoundingPeriods,
+                periodInYears: tenureYears
+            }) - principalAmount
+        );
+        setTimeout(()=> setLoading(false), 800);
+    }
+
+   
 
     return(
 
         <FDCalculatorContext.Provider value={
-            {    principalAmount,
+            {    loading,
+                 principalAmount,
                  interestRate, 
                  tenureYears, 
                  compoundingPeriods,
                  totalInterest,
+                 yearWiseInterestAmounts,
                  setPrincipalAmount,
                  setTenureYears,
                  setCompoundingPeriods,
                  setInterestRate,
+                 calculate: handleCalculate
             }} 
         >
                { children }
