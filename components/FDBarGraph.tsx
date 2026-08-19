@@ -1,7 +1,7 @@
 "use client"
 
 import { useFDCalcultorContext } from "@/context/FDContext";
-import { BarChart, Bar, XAxis } from "recharts";
+import { BarChart, Bar, XAxis, YAxis } from "recharts";
 import { ChartContainer, ChartConfig } from "@/components/ui/chart";
 import { Loader } from '@/components/CustomSpinner'
 import { useMemo } from "react";
@@ -49,6 +49,17 @@ export default function FDBarGraph(
                     </div>):
                     (<ChartContainer config={chartConfig} className="w-full h-full">
                       <BarChart data={dataRecords}>
+                           <YAxis 
+                                dataKey="totalReturn"
+                                tickLine={false}
+                                tickMargin={10}
+                                axisLine={false}
+                                tickFormatter={ ( val: number) =>
+                                    {   return val.toString();
+                                    }
+                                }
+                                
+                            ></YAxis>
                             <XAxis 
                                 dataKey="year"
                                 tickLine={false}
