@@ -72,6 +72,8 @@ export function FDCalculatorProvider({ children   }: {children: ReactNode}) {
         setTimeout(()=> setLoading(false), 800);
     }
 
+    useEffect(() => handleCalculate() ,[])
+
    
 
     return(
